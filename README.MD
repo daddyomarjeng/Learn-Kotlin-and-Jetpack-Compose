@@ -242,31 +242,245 @@ Write a Kotlin program that:
 3. Uses a `for` loop to print all numbers from **1 to the given number**.
 
 ```kotlin
+ print("Enter a number: ")
+ val input = readLine() // Reads user input as a string
+ val number = input?.toIntOrNull() // Converts input to Int (handling nulls)
+
+ if (number != null) {
+     // 1️⃣ Using `when` to check if it's Positive, Negative, or Zero
+     when {
+         number > 0 -> println("Positive")
+         number < 0 -> println("Negative")
+         else -> println("Zero")
+     }
+
+     // 2️⃣ Using a `for` loop to print numbers from 1 to the given number
+     if (number > 0) {
+         println("Numbers from 1 to $number:")
+         for (i in 1..number) {
+             print("$i ")
+         }
+     } else {
+         println("No range to print since number is negative or zero.")
+     }
+ } else {
+     println("Invalid input! Please enter a valid number.")
+ }
+
+
+```
+---
+Awesome! 🚀 Now, let's dive into **Functions & Object-Oriented Programming (OOP) in Kotlin**.
+
+---
+
+## **🚀 Lesson 3: Functions & OOP in Kotlin**
+Functions help us organize code, and OOP allows us to structure applications using classes and objects.
+
+---
+
+### **1️⃣ Functions in Kotlin**
+A function is a block of reusable code that performs a specific task.
+
+#### **🔹 Basic Function**
+```kotlin
+fun greet() {
+    println("Hello, Kotlin!")
+}
+
 fun main() {
-    print("Enter a number: ")
-    val input = readLine() // Reads user input as a string
-    val number = input?.toIntOrNull() // Converts input to Int (handling nulls)
+    greet() // Calling the function
+}
+```
 
-    if (number != null) {
-        // 1️⃣ Using `when` to check if it's Positive, Negative, or Zero
-        when {
-            number > 0 -> println("Positive")
-            number < 0 -> println("Negative")
-            else -> println("Zero")
-        }
+#### **🔹 Function with Parameters**
+```kotlin
+fun greet(name: String) {
+    println("Hello, $name!")
+}
 
-        // 2️⃣ Using a `for` loop to print numbers from 1 to the given number
-        if (number > 0) {
-            println("Numbers from 1 to $number:")
-            for (i in 1..number) {
-                print("$i ")
-            }
-        } else {
-            println("No range to print since number is negative or zero.")
-        }
-    } else {
-        println("Invalid input! Please enter a valid number.")
+fun main() {
+    greet("Omar") // Output: Hello, Omar!
+}
+```
+
+#### **🔹 Function with Return Value**
+```kotlin
+fun add(a: Int, b: Int): Int {
+    return a + b
+}
+
+fun main() {
+    val sum = add(5, 3)
+    println("Sum: $sum") // Output: Sum: 8
+}
+```
+
+#### **🔹 Single Expression Function (Short Syntax)**
+```kotlin
+fun multiply(a: Int, b: Int) = a * b
+
+fun main() {
+    println(multiply(4, 3)) // Output: 12
+}
+```
+
+#### **🔹 Default & Named Parameters**
+```kotlin
+fun greet(name: String = "Guest") {
+    println("Hello, $name!")
+}
+
+fun main() {
+    greet()         // Output: Hello, Guest!
+    greet("Omar")   // Output: Hello, Omar!
+}
+```
+
+---
+
+## **2️⃣ Object-Oriented Programming (OOP) in Kotlin**
+OOP helps us structure our code using **Classes, Objects, Inheritance, and Encapsulation**.
+
+### **🔹 Creating a Class & Object**
+```kotlin
+class Person(val name: String, val age: Int) {
+    fun introduce() {
+        println("Hi, my name is $name and I am $age years old.")
     }
 }
 
+fun main() {
+    val person = Person("Omar", 25)
+    person.introduce()
+}
 ```
+
+### **🔹 Constructors in Kotlin**
+```kotlin
+class Car(val brand: String, val model: String, val year: Int) {
+    fun displayInfo() {
+        println("$brand $model, Year: $year")
+    }
+}
+
+fun main() {
+    val myCar = Car("Toyota", "Camry", 2022)
+    myCar.displayInfo()
+}
+```
+
+### **🔹 Inheritance (Extending a Class)**
+```kotlin
+open class Animal(val name: String) {
+    fun makeSound() {
+        println("$name makes a sound")
+    }
+}
+
+class Dog(name: String) : Animal(name) {
+    fun bark() {
+        println("$name barks: Woof woof!")
+    }
+}
+
+fun main() {
+    val dog = Dog("Buddy")
+    dog.makeSound()
+    dog.bark()
+}
+```
+- `open` keyword allows the class to be inherited.
+- `Dog` class extends `Animal` and adds a new method (`bark`).
+
+### **🔹 Encapsulation (Using Private Variables)**
+```kotlin
+class BankAccount(private var balance: Double) {
+    fun deposit(amount: Double) {
+        balance += amount
+        println("Deposited: $$amount. New Balance: $$balance")
+    }
+
+    fun getBalance(): Double {
+        return balance
+    }
+}
+
+fun main() {
+    val account = BankAccount(1000.0)
+    account.deposit(500.0)
+    println("Current Balance: ${account.getBalance()}")
+}
+```
+- `private` hides `balance` from being accessed outside the class.
+- `deposit` and `getBalance` provide controlled access.
+
+---
+
+## **📝 Mini Task (Try This)**
+1. **Create a `Student` class** with:
+   - Properties: `name` (String) and `grade` (Int).
+   - A function `displayInfo()` that prints: `"Student: Name, Grade: Grade"`.
+2. **Inherit from `Student` to create a `CollegeStudent` class** with:
+   - Additional property: `major` (String).
+   - A function `showMajor()` that prints: `"Major: MajorName"`.
+
+Perfect! 🎉 Your Kotlin OOP implementation is correct and well-structured. Just a couple of **minor improvements** for better readability:
+
+### **✅ Suggested Improvements**
+1. **Use `override` for customization**: If you want `CollegeStudent` to have a different `displayInfo()` method, you can use `open` and `override`.
+2. **Use `super` to call parent class methods**.
+
+---
+
+```kotlin
+open class Student(val name:String, val grade:String){
+    fun displayInfo(){
+        println("Student: $name, Grade: $grade");
+    }
+}
+class CollegeStudent(name:String, grade:String, val major:String):Student(name, grade){
+    fun showMajor(){
+        println("Major: $major");
+    }
+}
+fun main() {
+ val collegeStudent = CollegeStudent("Omar Jeng", "3.9", "Information Systems");
+    collegeStudent.displayInfo();
+    collegeStudent.showMajor();
+}
+```
+### **🔹 Optimized Version with `override`**
+```kotlin
+open class Student(val name: String, val grade: String) {
+    open fun displayInfo() {
+        println("Student: $name, Grade: $grade")
+    }
+}
+
+class CollegeStudent(name: String, grade: String, val major: String) : Student(name, grade) {
+    override fun displayInfo() {
+        super.displayInfo() // Calls the parent class method
+        println("Major: $major")
+    }
+}
+
+fun main() {
+    val collegeStudent = CollegeStudent("Omar Jeng", "3.9", "Information Systems")
+    collegeStudent.displayInfo() // Now prints Major as well
+}
+```
+### **🛠️ Changes & Benefits**
+1. **Used `open fun` and `override fun`** → Allows `displayInfo()` in `CollegeStudent` to override the parent method.
+2. **Used `super.displayInfo()`** → Calls the parent’s `displayInfo()` method inside the child class.
+3. **Less redundant `println()` calls** → Now, `displayInfo()` automatically prints everything.
+
+---
+
+### **📌 Output**
+```
+Student: Omar Jeng, Grade: 3.9
+Major: Information Systems
+```
+
+This version makes it **easier to extend** in the future. Try it out and let me know if you want to explore more advanced OOP concepts like **interfaces, data classes, or abstract classes**! 🚀
