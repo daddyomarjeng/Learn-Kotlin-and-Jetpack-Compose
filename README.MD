@@ -484,3 +484,342 @@ Major: Information Systems
 ```
 
 This version makes it **easier to extend** in the future. Try it out and let me know if you want to explore more advanced OOP concepts like **interfaces, data classes, or abstract classes**! 🚀
+
+---
+
+Awesome! 🚀 Now, let's dive into **advanced OOP concepts in Kotlin**:
+
+1️⃣ **Abstract Classes & Methods**  
+2️⃣ **Interfaces**  
+3️⃣ **Data Classes**  
+4️⃣ **Sealed Classes**
+
+---
+
+## **1️⃣ Abstract Classes & Methods**
+Abstract classes are **partially implemented** classes that **cannot be instantiated** directly. They are meant to be **inherited**.
+
+### **🔹 Example: Abstract Class with Abstract Method**
+```kotlin
+abstract class Animal(val name: String) {
+    abstract fun makeSound() // Abstract method (no implementation)
+    
+    fun sleep() { // Regular method
+        println("$name is sleeping")
+    }
+}
+
+class Dog(name: String) : Animal(name) {
+    override fun makeSound() { // Providing implementation
+        println("$name barks: Woof woof!")
+    }
+}
+
+fun main() {
+    val dog = Dog("Buddy")
+    dog.makeSound() // Buddy barks: Woof woof!
+    dog.sleep()     // Buddy is sleeping
+}
+```
+💡 **Key Points:**  
+✔ `abstract class` cannot be instantiated directly.  
+✔ `abstract fun` must be implemented in subclasses.  
+✔ Can also have **regular functions** (`sleep()`).
+
+---
+
+## **2️⃣ Interfaces in Kotlin**
+An **interface** is like an abstract class, but:  
+✔ It **cannot store state** (no properties with values).  
+✔ A class can **implement multiple interfaces** (unlike single inheritance).
+
+### **🔹 Example: Using Interfaces**
+```kotlin
+interface Movable {
+    fun move() // No implementation
+}
+
+interface Speakable {
+    fun speak() {
+        println("Speaking...")
+    }
+}
+
+class Robot : Movable, Speakable { // Implementing multiple interfaces
+    override fun move() {
+        println("Robot is moving")
+    }
+}
+
+fun main() {
+    val r2d2 = Robot()
+    r2d2.move()   // Robot is moving
+    r2d2.speak()  // Speaking...
+}
+```
+💡 **Key Points:**  
+✔ Interfaces can have **default method implementations** (`speak()`).  
+✔ A class can **implement multiple interfaces** (unlike abstract classes).
+
+---
+
+## **3️⃣ Data Classes (For Storing Data)**
+Kotlin provides **data classes** to handle **immutable objects** with built-in functions (`toString()`, `copy()`, `equals()`, etc.).
+
+### **🔹 Example: Data Class**
+```kotlin
+data class User(val name: String, val age: Int)
+
+fun main() {
+    val user1 = User("Omar", 25)
+    val user2 = user1.copy(age = 26) // Creates a new object with modified age
+
+    println(user1) // User(name=Omar, age=25)
+    println(user2) // User(name=Omar, age=26)
+}
+```
+💡 **Key Points:**  
+✔ `copy()` creates a modified clone.  
+✔ Automatically generates **`toString()`, `equals()`, and `hashCode()`**.  
+✔ Best for **models, DTOs, and API responses**.
+
+---
+
+## **4️⃣ Sealed Classes (For Restricted Inheritance)**
+Sealed classes restrict which classes can **inherit** from them. This is useful in **state management and enums**.
+
+### **🔹 Example: Sealed Class for State Management**
+```kotlin
+sealed class Result {
+    class Success(val data: String) : Result()
+    class Error(val message: String) : Result()
+    object Loading : Result()
+}
+
+fun handleResult(result: Result) {
+    when (result) {
+        is Result.Success -> println("Success: ${result.data}")
+        is Result.Error -> println("Error: ${result.message}")
+        is Result.Loading -> println("Loading...")
+    }
+}
+
+fun main() {
+    handleResult(Result.Success("Data loaded successfully"))
+    handleResult(Result.Error("Something went wrong"))
+    handleResult(Result.Loading)
+}
+```
+💡 **Key Points:**  
+✔ `sealed class` ensures **only predefined types** (like `Success`, `Error`, `Loading`) can extend it.  
+✔ Useful for **managing states** in applications (e.g., API responses).
+
+---
+
+## **🔥 Summary**
+| Feature        | Abstract Class | Interface | Data Class | Sealed Class |
+|---------------|---------------|-----------|------------|--------------|
+| Can have methods with implementation | ✅ | ✅ | ✅ | ✅ |
+| Can have abstract methods | ✅ | ✅ | ❌ | ❌ |
+| Can store state (variables with values) | ✅ | ❌ | ✅ | ✅ |
+| Multiple inheritance | ❌ | ✅ | ❌ | ❌ |
+| Used for | **Base classes** | **Common behavior** | **Data storage** | **Restricted hierarchy** |
+
+---
+
+## **📝 Mini Task (Try This)**
+### **Task:**
+1. **Create an abstract class** `Vehicle` with:
+   - Property: `name: String`
+   - Abstract function `move()`
+2. **Create two subclasses**:
+   - `Car` that prints `"Car is driving"`
+   - `Bicycle` that prints `"Bicycle is pedaling"`
+3. **Test them in `main()`**.
+
+```kotlin
+abstract class Vehicle(val name: String) {
+    abstract fun move()
+}
+
+class Car(name: String) : Vehicle(name) {
+    override fun move() {
+        println("$name is driving on the road 🚗💨")
+    }
+}
+
+class Bicycle(name: String) : Vehicle(name) {
+    override fun move() {
+        println("$name is pedaling on the track 🚴‍♂️")
+    }
+}
+
+fun main() {
+    val car = Car("Toyota")
+    val bicycle = Bicycle("Homar")
+
+    car.move()      // Toyota is driving on the road 🚗💨
+    bicycle.move()  // Homar is pedaling on the track 🚴‍♂️
+}
+```
+
+---
+
+## **1️⃣ Understanding Interfaces in Kotlin**
+An **interface** is like an abstract class but with a few key differences:
+
+✅ **Cannot store state** (no instance variables with values)  
+✅ **Can have abstract and non-abstract methods**  
+✅ **Supports multiple inheritance** (a class can implement multiple interfaces)
+
+---
+
+### **🔹 Example: Creating & Implementing an Interface**
+```kotlin
+interface Movable {
+    fun move() // Abstract function (no implementation)
+}
+
+class Car : Movable {
+    override fun move() {
+        println("Car is driving on the road 🚗💨")
+    }
+}
+
+fun main() {
+    val myCar = Car()
+    myCar.move() // Output: Car is driving on the road 🚗💨
+}
+```
+✔ The `Car` class implements the `Movable` interface and **must** override `move()`.
+
+---
+
+## **2️⃣ Interfaces with Default Methods**
+Kotlin interfaces **can have default method implementations**, unlike Java.
+
+### **🔹 Example: Default Implementation**
+```kotlin
+interface Movable {
+    fun move() {
+        println("Moving...") // Default implementation
+    }
+}
+
+class Bike : Movable // No need to override `move()`, it will use the default
+
+fun main() {
+    val bike = Bike()
+    bike.move() // Output: Moving...
+}
+```
+✔ If `Bike` doesn’t override `move()`, it **uses the default method** from `Movable`.
+
+---
+
+## **3️⃣ Multiple Interfaces in Kotlin**
+A **class can implement multiple interfaces**, unlike single inheritance in classes.
+
+### **🔹 Example: Implementing Multiple Interfaces**
+```kotlin
+interface Drivable {
+    fun drive() {
+        println("Driving...")
+    }
+}
+
+interface Flyable {
+    fun fly() {
+        println("Flying...")
+    }
+}
+
+class FlyingCar : Drivable, Flyable // Implements both interfaces
+
+fun main() {
+    val futureCar = FlyingCar()
+    futureCar.drive() // Driving...
+    futureCar.fly()   // Flying...
+}
+```
+✔ `FlyingCar` **inherits from both** `Drivable` and `Flyable`.
+
+---
+
+## **4️⃣ Handling Conflicts in Multiple Interfaces**
+If two interfaces have the **same function name**, the class **must explicitly override it**.
+
+### **🔹 Example: Resolving Conflicts**
+```kotlin
+interface A {
+    fun show() {
+        println("Interface A")
+    }
+}
+
+interface B {
+    fun show() {
+        println("Interface B")
+    }
+}
+
+class C : A, B {
+    override fun show() {
+        super<A>.show() // Explicitly choosing A’s implementation
+    }
+}
+
+fun main() {
+    val obj = C()
+    obj.show() // Output: Interface A
+}
+```
+✔ `super<A>.show()` ensures that **A's `show()` method** is used.
+
+---
+
+## **🔥 Summary**
+| Feature | Abstract Class | Interface |
+|---------|--------------|-----------|
+| Can have abstract methods | ✅ | ✅ |
+| Can have concrete methods | ✅ | ✅ |
+| Can store state (instance variables with values) | ✅ | ❌ |
+| Supports multiple inheritance | ❌ | ✅ |
+| Can be instantiated | ❌ | ❌ |
+
+---
+
+## **📝 Mini Task (Try This)**
+### **Task:**
+1. **Create an interface** `Swimmable` with:
+   - A method `swim()` that prints `"Swimming..."`
+
+2. **Create an interface** `Runnable` with:
+   - A method `run()` that prints `"Running..."`
+
+3. **Create a class** `Amphibian` that implements both interfaces.
+
+4. **Test it in `main()`**.
+
+```kotlin
+interface Swimmable {
+    fun swim() {
+        println("Swimming... 🏊‍♂️")
+    }
+}
+
+interface Runnable {
+    fun run() {
+        println("Running... 🏃‍♂️")
+    }
+}
+
+class Amphibian : Swimmable, Runnable // No need for () unless passing constructor parameters
+
+fun main() {
+    val amphibian = Amphibian()
+    amphibian.swim() // Output: Swimming... 🏊‍♂️
+    amphibian.run()  // Output: Running... 🏃‍♂️
+}
+```
+---
