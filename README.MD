@@ -1095,4 +1095,145 @@ fun main() {
 }
 
 ```
+
 ---
+
+# **1️⃣ Encapsulation in Kotlin**
+Encapsulation is about **restricting access** to data using **visibility modifiers**:  
+✔ `private` → Only accessible within the same class  
+✔ `protected` → Accessible in the same class & subclasses  
+✔ `public` (default) → Accessible from anywhere  
+✔ `internal` → Accessible within the same module
+
+---
+
+### **🔹 Example: Encapsulation with Getters & Setters**
+```kotlin
+class BankAccount(private var balance: Double) {
+    fun deposit(amount: Double) {
+        if (amount > 0) {
+            balance += amount
+            println("Deposited: $$amount, New Balance: $$balance")
+        }
+    }
+
+    fun withdraw(amount: Double) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount
+            println("Withdrew: $$amount, Remaining Balance: $$balance")
+        } else {
+            println("Insufficient funds or invalid amount!")
+        }
+    }
+}
+
+fun main() {
+    val account = BankAccount(100.0)
+    account.deposit(50.0)
+    account.withdraw(30.0)
+}
+```
+✔ **Encapsulated `balance`** (it can’t be directly modified).  
+✔ **Controlled access using `deposit()` and `withdraw()` methods.**
+
+---
+
+# **2️⃣ Inheritance & Method Overriding**
+Inheritance allows a **subclass** to reuse or override features from a **parent class**.
+
+---
+
+### **🔹 Example: Basic Inheritance**
+```kotlin
+open class Animal {
+    open fun makeSound() {
+        println("Some generic animal sound")
+    }
+}
+
+class Dog : Animal() {
+    override fun makeSound() {
+        println("Woof! Woof!")
+    }
+}
+
+fun main() {
+    val genericAnimal = Animal()
+    val myDog = Dog()
+
+    genericAnimal.makeSound() // Output: Some generic animal sound
+    myDog.makeSound() // Output: Woof! Woof!
+}
+```
+✔ **`open` keyword** makes `Animal` **inheritable**.  
+✔ **`override` keyword** allows `Dog` to change `makeSound()`.
+
+---
+
+# **3️⃣ Companion Objects (Static Methods)**
+Kotlin **does not have `static` keywords**, but we can use **companion objects** instead.
+
+---
+
+### **🔹 Example: Companion Object**
+```kotlin
+class MathUtil {
+    companion object {
+        fun add(a: Int, b: Int): Int {
+            return a + b
+        }
+    }
+}
+
+fun main() {
+    println(MathUtil.add(5, 3)) // Output: 8
+}
+```
+✔ `companion object` allows calling `add()` **without creating an instance**.  
+✔ Equivalent to **static methods** in Java.
+
+---
+
+## **📝 Mini Task (Try This)**
+### **Task:**
+1. **Create a class `Car`** with:
+   - A **private** property `speed`
+   - Methods `accelerate()` and `brake()`
+2. **Create a subclass `SportsCar`** that:
+   - Overrides `accelerate()` to increase speed **faster**
+3. **Add a `companion object`** with a method `carInfo()`
+
+```kotlin
+open class Car(private var speed: Double) {
+    open fun accelerate() {
+        speed += 10
+        println("Accelerating... Speed is now $speed km/h")
+    }
+
+    fun brake() {
+        speed -= 5
+        if (speed < 0) speed = 0
+        println("Braking... Speed is now $speed km/h")
+    }
+
+    companion object {
+        fun carInfo(name: String, brand: String, price: Double) {
+            println("Car Name: $name, Car Brand: $brand, Car Price: $$price")
+        }
+    }
+}
+
+class SportsCar(speed: Double) : Car(speed) {
+    override fun accelerate() {
+        super.accelerate() // Call the parent method
+        println("Sports Car accelerating even faster! 🚀")
+    }
+}
+
+fun main() {
+    val car = SportsCar(32.4)
+    car.accelerate()
+    car.brake()
+    Car.carInfo("Rav4", "Toyota", 3200.0)
+}
+```
