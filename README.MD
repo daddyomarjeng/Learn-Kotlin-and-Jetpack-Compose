@@ -952,3 +952,147 @@ fun main() {
 }
 
 ```
+
+---
+
+## **1️⃣ Kotlin Collections – Lists, Sets, and Maps**
+Kotlin provides **immutable** and **mutable** collections:  
+✔ **Immutable (`listOf`, `setOf`, `mapOf`)** – Cannot be modified  
+✔ **Mutable (`mutableListOf`, `mutableSetOf`, `mutableMapOf`)** – Can be modified
+
+---
+
+### **🔹 Immutable List (Cannot be changed)**
+```kotlin
+fun main() {
+    val names = listOf("Omar", "Jeng", "Daddy") 
+    println(names[0]) // Output: Omar
+    println(names.size) // Output: 3
+}
+```
+✔ No `add()` or `remove()`, since it's **immutable**.
+
+---
+
+### **🔹 Mutable List (Can be changed)**
+```kotlin
+fun main() {
+    val names = mutableListOf("Omar", "Jeng", "Daddy")
+    names.add("New Name") // Adding an element
+    names.remove("Jeng")  // Removing an element
+    println(names) // Output: [Omar, Daddy, New Name]
+}
+```
+✔ `mutableListOf` allows adding/removing elements.
+
+---
+
+### **🔹 Immutable Set (No duplicates, unordered)**
+```kotlin
+fun main() {
+    val uniqueNumbers = setOf(1, 2, 3, 3, 2, 1)
+    println(uniqueNumbers) // Output: [1, 2, 3] (No duplicates)
+}
+```
+
+---
+
+### **🔹 Mutable Set (Can be changed)**
+```kotlin
+fun main() {
+    val uniqueNumbers = mutableSetOf(1, 2, 3)
+    uniqueNumbers.add(4) // Adding
+    uniqueNumbers.remove(2) // Removing
+    println(uniqueNumbers) // Output: [1, 3, 4]
+}
+```
+✔ **No duplicate values** in a `Set`.
+
+---
+
+### **🔹 Map (Key-Value Pairs)**
+```kotlin
+fun main() {
+    val user = mapOf("name" to "Omar", "age" to 25)
+    println(user["name"]) // Output: Omar
+}
+```
+
+---
+
+## **2️⃣ Higher-Order Functions (Functional Programming)**
+Higher-order functions **take functions as parameters** or **return functions**.
+
+---
+
+### **🔹 `forEach` – Loop Through a List**
+```kotlin
+fun main() {
+    val numbers = listOf(1, 2, 3)
+    numbers.forEach { println(it * 2) } // Output: 2, 4, 6
+}
+```
+
+---
+
+### **🔹 `map` – Transform List**
+```kotlin
+fun main() {
+    val numbers = listOf(1, 2, 3)
+    val doubled = numbers.map { it * 2 }
+    println(doubled) // Output: [2, 4, 6]
+}
+```
+✔ **`map` transforms** each element in a list.
+
+---
+
+### **🔹 `filter` – Get Specific Elements**
+```kotlin
+fun main() {
+    val numbers = listOf(1, 2, 3, 4, 5)
+    val evenNumbers = numbers.filter { it % 2 == 0 }
+    println(evenNumbers) // Output: [2, 4]
+}
+```
+✔ `filter` **keeps only the elements that match the condition**.
+
+---
+
+### **🔹 `reduce` – Accumulate Values**
+```kotlin
+fun main() {
+    val numbers = listOf(1, 2, 3, 4)
+    val sum = numbers.reduce { acc, num -> acc + num }
+    println(sum) // Output: 10
+}
+```
+✔ `reduce` **accumulates a value step by step**.
+
+---
+
+### **📝 Mini Task (Try This)**
+#### **Task:**
+1. Create a **mutable list** of numbers.
+2. Use `map()` to multiply each number by **3**.
+3. Use `filter()` to keep only numbers **greater than 10**.
+4. Use `reduce()` to **sum all elements**.
+
+```kotlin
+fun main() {
+   val numbers = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+   
+    // val multiplesOfThree = numbers.map{num-> num * 3};
+   val multiplesOfThree = numbers.map { it * 3 }
+   println("Numbers multiplied by 3: $multiplesOfThree")
+
+   //  val numbersGreaterThanTen = multiplesOfThree.filter{num-> num > 10}
+   val numbersGreaterThanTen = multiplesOfThree.filter { it > 10 }
+   println("Numbers greater than 10: $numbersGreaterThanTen")
+
+   val sumOfAllNumbers = numbersGreaterThanTen.reduce { acc, num -> acc + num }
+   println("Sum of all numbers: $sumOfAllNumbers")
+}
+
+```
+---
