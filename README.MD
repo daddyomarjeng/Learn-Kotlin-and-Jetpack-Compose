@@ -822,4 +822,133 @@ fun main() {
     amphibian.run()  // Output: Running... 🏃‍♂️
 }
 ```
+
 ---
+
+## **1️⃣ Data Classes – What & Why?**
+A **data class** is used to **store data** efficiently. It automatically provides:  
+✔ `toString()` → Prints the object neatly.  
+✔ `equals()` → Compares object values (not references).  
+✔ `copy()` → Creates a copy of an object.  
+✔ `hashCode()` → Generates a unique hash for the object.
+
+### **🔹 Example: Basic Data Class**
+```kotlin
+data class User(val name: String, val age: Int)
+
+fun main() {
+    val user1 = User("Omar", 25)
+    val user2 = user1.copy(age = 26) // Creates a modified copy
+
+    println(user1) // Output: User(name=Omar, age=25)
+    println(user2) // Output: User(name=Omar, age=26)
+}
+```
+✔ `copy()` allows modification without affecting the original object.  
+✔ `toString()` prints user-friendly output.
+
+---
+
+## **2️⃣ Data Class with Default Values**
+```kotlin
+data class Product(val name: String, val price: Double, val stock: Int = 10)
+
+fun main() {
+    val item1 = Product("Laptop", 1200.0)
+    println(item1) // Output: Product(name=Laptop, price=1200.0, stock=10)
+}
+```
+✔ Default values (`stock=10`) avoid boilerplate code.
+
+---
+
+## **3️⃣ Sealed Classes – What & Why?**
+A **sealed class** restricts which classes can inherit from it.  
+✔ Useful for handling **states** in apps (e.g., API responses, UI states).  
+✔ Works like an **advanced enum** with multiple data types.
+
+---
+
+### **🔹 Example: Sealed Class for API Response**
+```kotlin
+sealed class ApiResponse {
+    class Success(val data: String) : ApiResponse()
+    class Error(val message: String) : ApiResponse()
+    object Loading : ApiResponse()
+}
+
+fun handleResponse(response: ApiResponse) {
+    when (response) {
+        is ApiResponse.Success -> println("Data: ${response.data}")
+        is ApiResponse.Error -> println("Error: ${response.message}")
+        is ApiResponse.Loading -> println("Loading...")
+    }
+}
+
+fun main() {
+    handleResponse(ApiResponse.Success("User data loaded"))
+    handleResponse(ApiResponse.Error("Network error"))
+    handleResponse(ApiResponse.Loading)
+}
+```
+✔ `sealed class` **limits inheritance** to only predefined subclasses.  
+✔ `when` ensures **all cases** are handled.
+
+---
+
+### **🔥 Summary**
+| Feature | Data Class | Sealed Class |
+|---------|-----------|-------------|
+| Used for | **Storing data** | **Managing states** |
+| Has `copy()`, `toString()`, etc. | ✅ | ❌ |
+| Restricts inheritance | ❌ | ✅ |
+| Supports multiple subclasses | ❌ | ✅ |
+
+---
+
+### **📝 Mini Task (Try This)**
+#### **Task:**
+1. **Create a data class** `Book` with:
+   - Properties: `title`, `author`, `price`
+2. **Create a sealed class** `Shape` with subclasses:
+   - `Circle(radius: Double)`
+   - `Rectangle(width: Double, height: Double)`
+3. **Use `when` to print details** of each shape.
+
+```kotlin
+data class Book(val title: String, val author: String, val price: Double)
+
+sealed class Shape {
+    class Circle(val radius: Double) : Shape()
+    class Rectangle(val width: Double, val height: Double) : Shape()
+}
+
+fun handleShapes(shape: Shape) {
+    when (shape) {
+        is Shape.Circle -> println("Shape is a Circle with Radius: ${shape.radius}")
+        is Shape.Rectangle -> println("Shape is a Rectangle with Height: ${shape.height} and Width: ${shape.width}")
+    }
+}
+
+fun main() {
+    val book1 = Book("Things Fall Apart", "Chinua Achebe", 132.70)
+    val book2 = book1.copy(author = "Daddy Omar Jeng")
+
+    println("Book1: $book1")
+    println("Book2: $book2")
+    
+    // ✅ Corrected String Interpolation
+    println("Book2 toString(): ${book2.toString()}")
+    
+    // ✅ Fixed typo in "equals" comparison message
+    println("Compare Books: Book1 is equal to Book2: ${book1 == book2}")
+    println("Compare Books: Book1 is eual to book2: ${book2.equals(book1)}")
+    
+    println("Hash Code of Book2: ${book2.hashCode()}")
+
+    // Handling shapes
+    handleShapes(Shape.Circle(22.2))
+    handleShapes(Shape.Rectangle(14.2, 8.0))
+}
+
+```
