@@ -1237,3 +1237,150 @@ fun main() {
     Car.carInfo("Rav4", "Toyota", 3200.0)
 }
 ```
+### **🚀 1️⃣ Kotlin Lambdas & Higher-Order Functions**
+
+A **lambda function** is an **anonymous function** (a function without a name).
+
+---
+
+### **🔹 Basic Lambda Expression**
+```kotlin
+val sum = { a: Int, b: Int -> a + b }
+
+fun main() {
+    println(sum(5, 3)) // Output: 8
+}
+```
+✔ `{ a: Int, b: Int -> a + b }` is a **lambda expression**.  
+✔ It is assigned to `val sum` and can be **called like a function**.
+
+---
+
+### **🔹 Passing Lambda as Function Parameter**
+```kotlin
+fun operateOnNumbers(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+    return operation(a, b)
+}
+
+fun main() {
+    val result = operateOnNumbers(4, 2) { x, y -> x * y }
+    println(result) // Output: 8
+}
+```
+✔ The function **takes a lambda as a parameter**.  
+✔ `operation: (Int, Int) -> Int` means it expects a function that **takes two `Int`s and returns an `Int`**.
+
+---
+
+### **🔹 `it` Keyword (Single Parameter Lambda)**
+```kotlin
+val square: (Int) -> Int = { it * it }
+
+fun main() {
+    println(square(4)) // Output: 16
+}
+```
+✔ If a **lambda has only one parameter**, we can use **`it`** instead of explicitly naming it.
+
+---
+
+### **🔹 `filter`, `map`, `reduce` with Lambdas**
+```kotlin
+fun main() {
+    val numbers = listOf(1, 2, 3, 4, 5, 6)
+
+    val evens = numbers.filter { it % 2 == 0 }
+    println(evens) // Output: [2, 4, 6]
+
+    val squared = numbers.map { it * it }
+    println(squared) // Output: [1, 4, 9, 16, 25, 36]
+
+    val sum = numbers.reduce { acc, num -> acc + num }
+    println(sum) // Output: 21
+}
+```
+✔ `filter` → **keeps elements matching a condition**.  
+✔ `map` → **transforms each element**.  
+✔ `reduce` → **accumulates elements**.
+
+---
+
+
+## **🚀 2️⃣ Kotlin Coroutines (Asynchronous Programming)**
+A **coroutine** is like a lightweight thread for handling async tasks **without blocking the main thread**.
+
+### **🔹 Launching a Coroutine**
+```kotlin
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    launch {
+        delay(1000L) // Simulates network request
+        println("Hello from coroutine!")
+    }
+    println("Main thread running...")
+}
+```
+✔ `launch {}` creates a new coroutine.  
+✔ `delay(1000L)` pauses the coroutine **without blocking the main thread**.  
+✔ `runBlocking` keeps the **main function alive** until coroutines complete.
+
+---
+
+### **🔹 Using `async` for Parallel Execution**
+```kotlin
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val first = async { getData1() }
+    val second = async { getData2() }
+    
+    println("Result: ${first.await() + second.await()}")
+}
+
+suspend fun getData1(): Int {
+    delay(1000L)
+    return 10
+}
+
+suspend fun getData2(): Int {
+    delay(1000L)
+    return 20
+}
+```
+✔ `async` runs **multiple coroutines in parallel**.  
+✔ `await()` waits for the result **without blocking the thread**.  
+✔ `suspend fun` → A function that can **pause & resume execution**.
+
+---
+
+### **📝 Mini Task (Try This)**
+### **Task:**
+1. **Create two `suspend fun` functions** that return a number after a delay.
+2. **Use `async {}`** to call both functions **in parallel**.
+3. **Print the sum of both results**.
+
+```kotlin
+import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
+
+suspend fun number1(): Int {
+    delay(1000L)
+    return 20
+}
+
+suspend fun number2(): Int {
+    delay(400L)
+    return 10
+}
+
+fun main() = runBlocking {
+    val timeTaken = measureTimeMillis {
+        val num1 = async { number1() }
+        val num2 = async { number2() }
+        val sum = num1.await() + num2.await()
+        println("Sum: $sum")
+    }
+    println("Time taken: $timeTaken ms")
+}
+```
