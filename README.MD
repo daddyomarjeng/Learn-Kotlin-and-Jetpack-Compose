@@ -1384,3 +1384,222 @@ fun main() = runBlocking {
     println("Time taken: $timeTaken ms")
 }
 ```
+
+# 🚀 **Kotlin Flow: Reactive Programming with Cold Streams**
+
+**Kotlin Flow** is a powerful tool for handling **real-time, asynchronous data streams** efficiently.
+
+---
+
+## **1️⃣ What is Kotlin Flow?**
+- **Similar to LiveData/RxJava**, but part of **Kotlin Coroutines**.
+- **Cold stream** → It **doesn’t start emitting data until it is collected**.
+- **Asynchronous & Reactive** → Perfect for handling **network requests, database updates, sensor data, etc.**
+
+---
+
+## **2️⃣ Basic Flow Example**
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun simpleFlow(): Flow<Int> = flow {
+    for (i in 1..5) {
+        delay(500L) // Simulates async work
+        emit(i) // Emit values one by one
+    }
+}
+
+fun main() = runBlocking {
+    simpleFlow().collect { value ->
+        println("Received: $value")
+    }
+}
+```
+
+### **🔹 Explanation**
+✔ `flow {}` → Defines a **Flow** that emits numbers from `1` to `5`.  
+✔ `emit(value)` → Sends values **one by one**.  
+✔ `collect {}` → Collects (subscribes to) the emitted values.  
+✔ **Delays are handled asynchronously** using coroutines.
+
+---
+
+## **3️⃣ Flow is Cold (Starts When Collected)**
+Unlike a coroutine that starts immediately, a Flow **only starts when a collector is present**.
+
+```kotlin
+fun main() = runBlocking {
+    val numbersFlow = simpleFlow() // Flow is defined but not executed
+
+    delay(2000L) // Wait for 2 seconds before collecting
+
+    numbersFlow.collect { value -> println("Received: $value") } // Flow starts now
+}
+```
+✔ The Flow **doesn’t run** until `.collect()` is called.
+
+---
+
+## **4️⃣ Operators in Flow (`map`, `filter`, `take`)**
+Just like collections (`List`), Flow supports **operators** to transform data.
+
+```kotlin
+fun main() = runBlocking {
+    simpleFlow()
+        .map { it * 2 }  // Double the values
+        .filter { it > 5 } // Keep values > 5
+        .take(2) // Take only the first 2 results
+        .collect { println("Processed: $it") }
+}
+```
+✔ `map {}` → **Transforms** each item.  
+✔ `filter {}` → **Filters** items.  
+✔ `take(n)` → **Takes only `n` values** from the Flow.
+
+---
+
+## **5️⃣ Flow vs Suspend Function**
+| Feature        | Flow | Suspend Function |
+|---------------|------|-----------------|
+| **Returns** | **Multiple values over time** | **Single value** |
+| **Execution** | **Cold (Runs only when collected)** | **Runs immediately** |
+| **Best for** | **Real-time data, streaming** | **Single network/database request** |
+
+---
+
+### **🚀 3️⃣ Kotlin Flow (Cold Streams & Real-Time Data)**
+Kotlin **Flow** is designed for **reactive programming**, making it perfect for **handling streams of data asynchronously**.
+
+Unlike **suspend functions**, which return **a single value**, **Flow** can emit **multiple values over time**.
+
+---
+
+## **🔹 Basic Flow Example**
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun main() = runBlocking {
+    simpleFlow().collect { value ->
+        println("Received: $value")
+    }
+}
+
+fun simpleFlow(): Flow<Int> = flow {
+    for (i in 1..5) {
+        delay(500) // Simulate a slow operation
+        emit(i) // Emit values one by one
+    }
+}
+```
+
+✔ **Flow produces multiple values over time** (like a stream).  
+✔ **`collect {}`** listens for new values.  
+✔ **`emit(value)`** sends data into the Flow.  
+✔ **Cold Stream** → It only starts when there is a collector.
+
+---
+
+## **🔹 Flow vs. Suspend Function**
+| Feature       | `suspend fun` | `Flow` |
+|--------------|--------------|--------|
+| Returns      | Single value | Multiple values |
+| Execution    | Calls once   | Emits repeatedly |
+| Usage        | One-time operation | Continuous updates (e.g., LiveData) |
+
+---
+
+## **🔹 Transforming Flow (`map`, `filter`)**
+We can apply **functional operations** on Flow, just like with lists!
+
+```kotlin
+fun transformedFlow(): Flow<Int> = flow {
+    for (i in 1..5) {
+        delay(500)
+        emit(i)
+    }
+}.map { it * 2 } // Doubles each number
+
+fun main() = runBlocking {
+    transformedFlow().collect { value ->
+        println("Transformed: $value")
+    }
+}
+```
+
+✔ `map { it * 2 }` → **Transforms values before emitting**.  
+✔ **Output:** `2, 4, 6, 8, 10`
+
+---
+
+## **🔹 Flow Operators: `filter()`**
+We can filter Flow just like lists.
+
+```kotlin
+fun filteredFlow(): Flow<Int> = flow {
+    for (i in 1..10) {
+        delay(200)
+        emit(i)
+    }
+}.filter { it % 2 == 0 } // Keeps only even numbers
+
+fun main() = runBlocking {
+    filteredFlow().collect { value ->
+        println("Even Number: $value")
+    }
+}
+```
+
+✔ `filter { it % 2 == 0 }` → **Keeps only even numbers**.  
+✔ **Output:** `2, 4, 6, 8, 10`
+
+---
+
+## **🔹 Flow with `buffer()` (Parallel Processing)**
+Normally, **Flow is sequential**, meaning it **waits** for each operation to finish before emitting the next value.  
+To **speed up processing**, we can use **`buffer()`** to collect items **asynchronously**.
+
+```kotlin
+fun bufferedFlow(): Flow<Int> = flow {
+    for (i in 1..3) {
+        delay(500)
+        emit(i)
+    }
+}.buffer() // Allows parallel collection
+
+fun main() = runBlocking {
+    bufferedFlow().collect { value ->
+        println("Buffered value: $value")
+        delay(1000) // Simulating slow collector
+    }
+}
+```
+
+✔ **Without `buffer()`**: **Total time = 3 × (500ms + 1000ms) = 4.5 sec**  
+✔ **With `buffer()`**: **Total time reduced to ~3 sec**
+
+---
+
+## **📝 Mini Task (Try This)**
+### **Task:**
+1. **Create a Flow** that emits numbers from **1 to 10**.
+2. **Use `map()`** to square each number.
+3. **Use `filter()`** to keep only numbers greater than **20**.
+4. **Collect the Flow and print the values**.
+
+```kotlin
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+fun myFlow():Flow<Int> = flow{
+	for(i in 1..10){
+        delay(200);
+        emit(i)
+    }
+}.map{it *it}.filter{it > 20}
+
+fun main() = runBlocking {
+    myFlow().collect {value -> println("Flow: ${value}")}
+}
+```
